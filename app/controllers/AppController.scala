@@ -14,6 +14,10 @@ import models.CustomException
 
 import scala.concurrent.{ExecutionContext, Future}
 
+import play.api.libs.json._
+import play.api.mvc.MultipartFormData
+import java.nio.file.{Files, Paths}
+import play.api.libs.Files.TemporaryFile
 
 
 class AppController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Controller
@@ -23,6 +27,24 @@ class AppController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Co
 
   def list = Action.async { implicit request =>
     dao.find().map(widgets => Ok(Json.toJson(widgets)))
+  }
+
+  def file(filename: String) = Action {
+    val path = "C:\\Users\\Diego Fernando\\Programação\\scala\\getting-started-play-scala-master\\tmp\\picture\\" + filename
+    Ok.sendFile(new java.io.File(path))
+  }
+
+  def addPhoto = Action(parse.multipartFormData) { request =>
+    request.body.file("picture").map { picture =>
+      import java.io.File
+      val filename = picture.filename
+      val contentType = picture.contentType
+      picture.ref.moveTo(new File(s"C:\\Users\\Diego Fernando\\Programação\\scala\\getting-started-play-scala-master\\tmp\\picture\\$filename"))
+      Ok("File uploaded")
+    }.getOrElse {
+      Redirect(routes.Application.index).flashing(
+        "error" -> "Missing file")
+    }
   }
 
   def add = Action.async(BodyParsers.parse.json) { implicit request =>
@@ -37,7 +59,7 @@ class AppController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Co
         throw CustomException("optional")
       }
       val date_birth_formated = DateUtils.convertStringToDate(date_birth)
-      
+
       dao.save(BSONDocument(
       Name -> name,
       CPF -> cpf,
@@ -75,13 +97,8 @@ class AppController @Inject()(val reactiveMongoApi: ReactiveMongoApi) extends Co
   }
 
   def update(id: String) = Action.async(BodyParsers.parse.json) { implicit request =>
-    val name = (request.body \ Name).as[String]
-    val cpf = (request.body \ CPF).as[String]
-    val rg = (request.body \ RG).as[String]
-    val date_birth = (request.body \ Date_birth).as[String]
-    val mother_name = (request.body \ Mother_name).as[String]
-    val father_name = (request.body \ Father_name).as[String]
-    val date_joined = (request.body \ Date_joined).as[String]
+    val filename = (request.body \ "file").as[String]
+
     dao.update(BSONDocument(Id -> BSONObjectID(id)),
       BSONDocument("$set" -> BSONDocument(
         Name -> name,
