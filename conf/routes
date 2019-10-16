@@ -2,19 +2,17 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET        /                  			controllers.Application.index
+# Utilities
 GET        /cleanup           			controllers.Application.cleanup
 
-#Widgets
+# Routes
 GET        /api/user          			controllers.AppController.list
 POST       /api/user/add      			controllers.AppController.add
 GET        /api/user/:digit   			controllers.AppController.read(digit: String)
 GET        /api/user/s/:name   			controllers.AppController.search(name: String)
 DELETE     /api/user/delete/:digit   	controllers.AppController.delete(digit: String)
-PATCH      /api/user/:id      			controllers.AppController.update(id: String)
+POST       /api/user/:digit     		controllers.AppController.update(digit: String)
 
-POST	   /api/user/photo				controllers.AppController.addPhoto
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file         		controllers.Assets.versioned(path="/public", file: Asset)

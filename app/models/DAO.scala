@@ -28,6 +28,7 @@ trait DAO {
   def remove(document: BSONDocument)(implicit ec: ExecutionContext): Future[WriteResult]
 
   def save(document: BSONDocument)(implicit ec: ExecutionContext): Future[WriteResult]
+
 }
 
 class DAOExec @Inject()(reactiveMongoApi: ReactiveMongoApi) extends DAO {
