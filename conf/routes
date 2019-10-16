@@ -3,13 +3,13 @@
 # ~~~~
 
 # Utilities
-GET        /cleanup           			controllers.Application.cleanup
+GET        /api/cleanup           		controllers.Application.cleanup
 
 # Routes
-GET        /api/user          			controllers.AppController.list
+GET        /api/users          			controllers.AppController.list
 POST       /api/user/add      			controllers.AppController.add
 GET        /api/user/:digit   			controllers.AppController.read(digit: String)
-GET        /api/user/s/:name   			controllers.AppController.search(name: String)
+GET        /api/users/s/:name   		controllers.AppController.search(name: String)
 DELETE     /api/user/delete/:digit   	controllers.AppController.delete(digit: String)
 POST       /api/user/:digit     		controllers.AppController.update(digit: String)
 
