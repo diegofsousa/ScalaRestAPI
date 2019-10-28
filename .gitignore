@@ -12,3 +12,5 @@ target
 /RUNNING_PID
 /data/db/**
 /logs/**
+
+conf/application.conf

@@ -37,6 +37,10 @@ HEADER: multipart/form-data
 BODY: key: picture, value: [CAMINHO DA IMAGEM]
 ```
 
+### GET - ```/api/auth``` - Autentica com os dados do Twitter.
+
+> Neste caso, como existe o procedimento da janela de autenticação, o processo deve ser feito no navegador. O sistema é capaz de salvar: nome, username do Twitter e URL da foto de perfil.
+
 ### GET - ```/api/users``` - Retorna todos os usuários.
 
 ### DELETE - ```/api/user/delete/:digit``` - Excluir um usuário.
@@ -71,6 +75,17 @@ O MongoDB não aceita duplicação de documentos para "RG" e "CPF" com o comando
 Resolvendo problemas do Play Framework com Windows para UTF-8. Entre na pasta projeto e insira:
 
 ```set JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"```
+
+É necessário criar uma arquivo ```application.conf``` na pasta ```conf``` com os seguintes dados:
+
+```
+play.i18n.langs = [ "en" ]
+play.modules.enabled += "play.modules.reactivemongo.ReactiveMongoModule"
+mongodb.uri = "mongodb://localhost:27017/nome_do_banco"
+twitter.ck1 = "api_key_twitter"
+twitter.ck2 = "api_secret_key_twitter"
+```
+
 
 # Referências
 
